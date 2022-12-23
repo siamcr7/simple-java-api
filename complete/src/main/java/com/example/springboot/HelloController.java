@@ -28,7 +28,6 @@ public class HelloController {
 
 			String workingDir = System.getProperty("user.dir");
 			String localSrc = workingDir + "\\..\\" + fileName + ".zip";
-            // System.out.println("Working Directory = " + path);
 
 			//Input stream for the file in local file system to be written to HDFS
 			InputStream in = new BufferedInputStream(new FileInputStream(localSrc));
@@ -36,7 +35,6 @@ public class HelloController {
 			//Get configuration of Hadoop system
 			Configuration configuration = new Configuration();
 			configuration.set("fs.defaultFS", "hdfs://localhost:9000");
-			// System.out.println("Connecting to -- "+conf.get("fs.defaultFS"));
 
 			//Destination file in HDFS
 			String dst = "/" + res;
@@ -46,10 +44,7 @@ public class HelloController {
 			//Copy file from local to HDFS
 			IOUtils.copyBytes(in, out, 4096, true);
 
-			// System.out.println(dst + " copied to HDFS");
-			// res = dst + " copied to HDFS";
 		} catch (IOException e) {
-			// res = e.getMessage();
 		}
 		return res;
 	}
@@ -63,12 +58,10 @@ public class HelloController {
 			//Get configuration of Hadoop system
 			Configuration configuration = new Configuration();
 			configuration.set("fs.defaultFS", "hdfs://localhost:9000");
-			// System.out.println("Connecting to -- "+conf.get("fs.defaultFS"));
 
 			//Destination file in HDFS
 			String dst = "/";
 			FileSystem fs = FileSystem.get(URI.create(dst), configuration);
-			// Path home = fs.getHomeDirectory();
 
 			//the second boolean parameter here sets the recursion to true
 			RemoteIterator<LocatedFileStatus> fileStatusListIterator = 
@@ -76,12 +69,9 @@ public class HelloController {
 
 			while(fileStatusListIterator.hasNext()) {
 				LocatedFileStatus fileStatus = fileStatusListIterator.next();
-				//do stuff with the file like ...
 				fs.delete(fileStatus.getPath(), true);
 			}
 
-			
-			
 		} catch (IOException e) {
 			res = e.getMessage();
 		}
